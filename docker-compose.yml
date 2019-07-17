@@ -9,4 +9,4 @@ services:
     volumes:
       - ./app:/app
     command: >
-      sh -C "sudo python manage.py runserver 0.0.0.0:8000"
+      sh -C "sudo3 python manage.py runserver 0.0.0.0:8000"
