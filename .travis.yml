@@ -8,4 +8,4 @@ services:
 before_script: sudo pip install docker-compose
 
 script:
-  - sudo docker-compose --rm app sh -c "sudo python3 manage.py test && flake8"
+  - sudo docker-compose app sh -c "sudo python3 manage.py test && flake8"
