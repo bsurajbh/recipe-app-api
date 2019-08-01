@@ -21,7 +21,7 @@ def sample_ingredient(user, name='Carrot'):
 
 def detail_url(recipe_id):
     """return details of recipe"""
-    return reverse('recipe:recipe-detail', args=recipe_id)
+    return reverse('recipe:recipe-detail', args=[recipe_id])
 
 
 def sample_recipe(user, **params):
@@ -95,7 +95,7 @@ class PrivateRecipeTests(TestCase):
         recipe.ingredients.add(sample_ingredient(user=self.user))
 
         url = detail_url(recipe.id)
-        res = self.client.post(url)
+        res = self.client.get(url)
 
         serialiser = RecipeDetailSerializer(recipe)
         self.assertEqual(res.data, serialiser.data)
