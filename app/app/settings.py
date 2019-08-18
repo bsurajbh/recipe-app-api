@@ -131,3 +131,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = '/vol/web/media'
 # default custom user model always before migrations
 AUTH_USER_MODEL = 'core.User'
+APPEND_SLASH = False

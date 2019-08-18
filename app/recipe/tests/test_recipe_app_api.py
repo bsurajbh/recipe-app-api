@@ -146,3 +146,47 @@ class ImageUploadTest(TestCase):
         res = self.client.post(url, {'image': 'notimage'}, format='multipart')
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_filter_by_tags(self):
+        """filter recipe with tags"""
+        recipe1 = sample_recipe(user=self.user, title='Paneer tikka')
+        recipe2 = sample_recipe(user=self.user, title='Paneer masala')
+        tag1 = sample_tag(user=self.user, name='vegan')
+        tag2 = sample_tag(user=self.user, name='vegetarian')
+        recipe1.tags.add(tag1)
+        recipe2.tags.add(tag2)
+        recipe3 = sample_recipe(user=self.user, title="chicken")
+
+        paylaod = {'tags': f'{tag1.id},{tag2.id}'}
+
+        res = self.client.get(RECIPE_URL, paylaod)
+
+        serialiser1 = RecipeSerializer(recipe1)
+        serialiser2 = RecipeSerializer(recipe2)
+        serialiser3 = RecipeSerializer(recipe3)
+
+        self.assertIn(serialiser1.data, res.data)
+        self.assertIn(serialiser2.data, res.data)
+        self.assertNotIn(serialiser3.data, res.data)
+
+    def test_filter_by_ingredients(self):
+        """filter recipe with tags"""
+        recipe1 = sample_recipe(user=self.user, title='Paneer tikka')
+        recipe2 = sample_recipe(user=self.user, title='Paneer masala')
+        ingredient1 = sample_ingredient(user=self.user, name='soda')
+        ingredient2 = sample_ingredient(user=self.user, name='pickle')
+        recipe1.ingredients.add(ingredient1)
+        recipe2.ingredients.add(ingredient2)
+        recipe3 = sample_recipe(user=self.user, title="mashrooms")
+
+        paylaod = {'ingredients': f'{ingredient1.id},{ingredient2.id}'}
+
+        res = self.client.get(RECIPE_URL, paylaod)
+
+        serialiser1 = RecipeSerializer(recipe1)
+        serialiser2 = RecipeSerializer(recipe2)
+        serialiser3 = RecipeSerializer(recipe3)
+
+        self.assertIn(serialiser1.data, res.data)
+        self.assertIn(serialiser2.data, res.data)
+        self.assertNotIn(serialiser3.data, res.data)
